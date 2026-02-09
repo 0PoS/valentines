@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>For You ❤️</title>
+  <title>Alainmar</title>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -31,6 +31,7 @@
     }
 
     section {
+      pointer-events: none;
       min-height: 100vh;
       padding: 60px 20px;
       display: flex;
@@ -90,26 +91,39 @@
       transform: translateY(0);
     }
 
-    /* Gallery */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 18px;
+        /* Gallery */
+        .gallery {
+      position: relative;
       width: 100%;
-      max-width: 900px;
-      margin-top: 30px;
+      max-width: 420px; /* IMAGE SIZE CONTROL */
+      height: 420px;    /* IMAGE SIZE CONTROL */
+      margin-top: 40px;
     }
 
-    .gallery img {
+        .gallery img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      border-radius: 14px;
+      height: 100%;
       object-fit: cover;
-      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      border-radius: 18px;
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 2s ease, transform 2s ease;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.18);
     }
 
-    .gallery img:hover {
-      transform: scale(1.06) rotate(-0.5deg);
-      box-shadow: 0 20px 45px rgba(0,0,0,0.18);
+    .gallery img.active {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      z-index: 2;
+    }
+
+        .gallery img.exit {
+      opacity: 0;
+      transform: scale(0.92);
+      z-index: 1;
     }
 
     /* Letter */
@@ -181,16 +195,16 @@
   </audio>
 
   <!-- Landing -->
-  <section id="landing" class="fade">
+  <section id="landing" class="fade" style="pointer-events:auto">
     <h1>For the girl I love</h1>
     <p>Even when I’m far, my heart never is.</p>
-    <a href="#voice" class="btn" onclick="startExperience()">For you</a>
+    <a href="#voice" class="btn" onclick="startExperience()">Open</a>
   </section>
 
   <!-- Voice Note -->
   <section id="voice" class="fade">
-    <h2>From me</h2>
-    <p>I figured you might want to hear me. Close your eyes.</p>
+    <h2>Hear Me</h2>
+    <p>Close your eyes. This one is just for you.</p>
     <audio controls>
       <source src="voice-note.mp3" type="audio/mpeg" />
     </audio>
@@ -200,8 +214,8 @@
   <section id="gallery" class="fade">
     <h2>Us</h2>
     <p>Memories I replay when I miss you.</p>
-    <div class="gallery">
-      <img src="badminton.jpg" alt="us">
+        <div class="gallery">
+      <img src="badminton.jpg" alt="us" class="active">
       <img src="basketball_1.jpg" alt="us">
       <img src="basketball_1.jpg" alt="us">
       <img src="basketball_2.jpg" alt="us">
@@ -210,7 +224,7 @@
 
   <!-- Letter -->
   <section id="letter" class="fade">
-    <h2>Letter For You</h2>
+    <h2>What I Don’t Always Say</h2>
     <div class="letter">
       <p>My love,</p>
       <p>I know this isn’t how Valentine’s Day is supposed to look. I should be next to you, holding your hand.</p>
@@ -245,9 +259,16 @@
     const music = document.getElementById('bg-music');
     let heartInterval;
 
+    function unlockScroll() {
+      document.body.style.overflowY = 'auto';
+      document.querySelectorAll('section').forEach(sec => sec.style.pointerEvents = 'auto');
+    }
+
     function startExperience() {
       fadeInMusic();
+      unlockScroll();
       startHearts();
+      startGalleryCycle();
       document.getElementById('music-toggle').style.display = 'block';
     }
 
@@ -271,6 +292,24 @@
       } else {
         music.pause();
       }
+    }
+
+        function startGalleryCycle() {
+      const images = document.querySelectorAll('.gallery img');
+      let index = 0;
+
+      setInterval(() => {
+        const current = images[index];
+        current.classList.remove('active');
+        current.classList.add('exit');
+
+        index = (index + 1) % images.length;
+        const next = images[index];
+        next.classList.remove('exit');
+        next.classList.add('active');
+
+        setTimeout(() => current.classList.remove('exit'), 900);
+      }, 3000);
     }
 
     function startHearts() {
