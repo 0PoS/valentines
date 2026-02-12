@@ -1,329 +1,283 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Alainmar ❤️</title>  <!-- Google Fonts -->  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">  <style>
-    :root {
-      --bg: #faf7f5;
-      --accent: #e8b4bc;
-      --text: #2b2b2b;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Alainmar ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #faf7f5;
+  --accent: #e8b4bc;
+  --text: #2b2b2b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow: hidden;
+}
+
+section {
+  pointer-events: none;
+  min-height: 100vh;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+h1, h2 {
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 12px 28px;
+  border-radius: 30px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: transform .25s ease;
+}
+.btn:hover { transform: translateY(-3px); }
+
+/* Fade sections */
+.fade {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+.fade.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== GALLERY ===== */
+.gallery {
+  position: relative;
+  width: 320px;     /* 👈 IMAGE SIZE */
+  height: 320px;    /* 👈 IMAGE SIZE */
+  margin-top: 40px;
+}
+
+.gallery img,
+.gallery video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 3s ease, transform 3s ease; /* 👈 ANIMATION SPEED */
+  box-shadow: 0 25px 50px rgba(0,0,0,0.18);
+}
+
+.gallery .active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.gallery .exit {
+  opacity: 0;
+  transform: scale(0.92);
+  z-index: 1;
+}
+
+/* Letter */
+.letter {
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(6px);
+  padding: 32px;
+  border-radius: 18px;
+  max-width: 800px;
+}
+
+/* Hearts */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  color: rgba(232,180,188,0.7);
+  pointer-events: none;
+  animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0) scale(1); opacity: 1; }
+  to   { transform: translateY(-120vh) scale(1.4); opacity: 0; }
+}
+
+/* Music button */
+#music-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(232,180,188,0.9);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: none;
+}
+
+.love {
+  font-size: 2.2rem;
+  margin-top: 40px;
+  color: var(--accent);
+  font-family: 'Playfair Display', serif;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bg-music" loop>
+  <source src="background.mp3" type="audio/mpeg">
+</audio>
+
+<section id="landing" class="fade" style="pointer-events:auto">
+  <h1>For the girl I love</h1>
+  <p>Even when I’m far away, my heart never is.</p>
+  <button class="btn" onclick="startExperience()">Open</button>
+</section>
+
+<section id="voice" class="fade">
+  <h2>Hear Me</h2>
+  <p>This one is just for you.</p>
+  <audio controls>
+    <source src="voice-note.mp3" type="audio/mpeg">
+  </audio>
+</section>
+
+<section id="gallery" class="fade">
+  <h2>Us</h2>
+  <p>Memories I replay when I miss you.</p>
+
+  <div class="gallery">
+    <!-- 🔁 YOU CAN REORDER THESE FREELY -->
+    <img src="badminton.jpg" alt="us">
+    <video src="clip.mp4" muted loop playsinline alt="us"></video>
+    <img src="basketball_1.jpg" alt="us">
+    <img src="basketball_2.jpg" alt="us">
+  </div>
+</section>
+
+<section id="letter" class="fade">
+  <h2>To my dearest Grace</h2>
+  <div class="letter">
+    <p>My love,</p>
+    <p>No matter the distance, you’re always my person.</p>
+    <p>Happy Valentine’s Day.</p>
+    <p><strong>Always yours,<br>Ko</strong></p>
+  </div>
+</section>
+
+<section id="end" class="fade">
+  <h2>This distance is temporary.</h2>
+  <p>Us is not.</p>
+  <div class="love">I love you</div>
+</section>
+
+<button id="music-toggle" onclick="toggleMusic()">🎵</button>
+
+<script>
+/* Fade sections */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => e.isIntersecting && e.target.classList.add('show'));
+}, { threshold: 0.2 });
+document.querySelectorAll('.fade').forEach(f => observer.observe(f));
+
+/* Music */
+const music = document.getElementById('bg-music');
+function fadeInMusic() {
+  music.volume = 0;
+  music.play();
+  let v = 0;
+  const i = setInterval(() => {
+    if (v < 0.25) { v += 0.01; music.volume = v; }
+    else clearInterval(i);
+  }, 120);
+}
+function toggleMusic() {
+  music.paused ? music.play() : music.pause();
+}
+
+/* Unlock + start */
+function startExperience() {
+  document.body.style.overflow = 'auto';
+  document.querySelectorAll('section').forEach(s => s.style.pointerEvents = 'auto');
+  fadeInMusic();
+  startHearts();
+  startGallery();
+  document.getElementById('music-toggle').style.display = 'block';
+}
+
+/* Hearts */
+let heartInterval;
+function startHearts() {
+  if (heartInterval) return;
+  heartInterval = setInterval(() => {
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.innerText = '❤';
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.fontSize = 14 + Math.random()*18 + 'px';
+    h.style.animationDuration = 6 + Math.random()*4 + 's';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 9000);
+  }, 600);
+}
+
+/* ===== GALLERY LOGIC ===== */
+const galleryItems = document.querySelectorAll('.gallery img, .gallery video');
+let index = 0;
+const DISPLAY_TIME = 6000; // ⏱️ CHANGE DURATION HERE (ms)
+
+function showItem(i) {
+  galleryItems.forEach((el, idx) => {
+    el.classList.remove('active', 'exit');
+
+    if (el.tagName === 'VIDEO') {
+      el.pause();
+      el.currentTime = 0;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    if (idx === i) {
+      el.classList.add('active');
+      if (el.tagName === 'VIDEO') el.play();
+    } else {
+      el.classList.add('exit');
     }
+  });
+}
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      scroll-behavior: smooth;
-      overflow-x: hidden;
-    }
-
-    section {
-      pointer-events: none;
-      min-height: 100vh;
-      padding: 60px 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    h1, h2 {
-      font-family: 'Playfair Display', serif;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      font-size: 2.4rem;
-    }
-
-    p {
-      max-width: 700px;
-      margin-bottom: 20px;
-      font-size: 1.05rem;
-    }
-
-    .btn {
-      padding: 12px 28px;
-      border-radius: 30px;
-      border: none;
-      background: var(--accent);
-      color: #fff;
-      font-size: 1rem;
-      cursor: pointer;
-      text-decoration: none;
-      transition: transform 0.25s ease, opacity 0.25s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      opacity: 0.9;
-    }
-
-    audio {
-      margin-top: 20px;
-      width: 280px;
-    }
-
-    /* Fade-in sections */
-    .fade {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 1.2s ease, transform 1.2s ease;
-    }
-
-    .fade.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-        /* Gallery */
-        .gallery {
-      position: relative;
-      width: 100%;
-      max-width: 420px; /* IMAGE SIZE CONTROL */
-      height: 420px;    /* IMAGE SIZE CONTROL */
-      margin-top: 40px;
-    }
-
-        .gallery img,
-    .gallery video {
-      width: 100%;
-      max-width: 220px;
-      border-radius: 14px;
-      object-fit: cover;
-      opacity: 0;
-      transform: scale(0.95);
-      transition: opacity 2.2s ease, transform 2.2s ease;
-    }
-
-    .gallery video {
-      height: auto;
-    }
-
-    .gallery .active {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .gallery img.active {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-      z-index: 2;
-    }
-
-        .gallery img.exit {
-      opacity: 0;
-      transform: scale(0.92);
-      z-index: 1;
-    }
-
-    /* Letter */
-    .letter {
-      background: rgba(255,255,255,0.65);
-      backdrop-filter: blur(6px);
-      padding: 32px;
-      border-radius: 18px;
-      max-width: 800px;
-    }
-
-    footer {
-      font-size: 0.9rem;
-      opacity: 0.7;
-      margin-top: 30px;
-    }
-
-    /* Floating hearts */
-    .heart {
-      position: fixed;
-      bottom: -20px;
-      color: rgba(232,180,188,0.7);
-      animation: floatUp linear forwards;
-      pointer-events: none;
-    }
-
-    @keyframes floatUp {
-      from {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-      to {
-        transform: translateY(-120vh) scale(1.4);
-        opacity: 0;
-      }
-    }
-
-    /* Music toggle */
-    #music-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(232,180,188,0.9);
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      font-size: 20px;
-      color: white;
-      cursor: pointer;
-      display: none;
-    }
-
-    /* Ending love text */
-    .love {
-      font-size: 2.2rem;
-      margin-top: 40px;
-      color: var(--accent);
-      font-family: 'Playfair Display', serif;
-    }
-  </style></head><body>  <!-- Background Music -->  <audio id="bg-music" loop>
-    <source src="background.mp3" type="audio/mpeg">
-  </audio>  <!-- Landing -->  <section id="landing" class="fade" style="pointer-events:auto">
-    <h1>For the girl I love</h1>
-    <p>Even when I’m far away, my heart never is.</p>
-    <a href="#voice" class="btn" onclick="startExperience()">Open</a>
-  </section>  <!-- Voice Note -->  <section id="voice" class="fade">
-    <h2>Hear Me</h2>
-    <p>You said you like my voice. So, this one is just for you.</p>
-    <audio controls>
-      <source src="voice-note.mp3" type="audio/mpeg" />
-    </audio>
-  </section>  <!-- Gallery -->  <section id="gallery" class="fade">
-    <h2>Us</h2>
-    <p>Memories I replay when I miss you.</p>
-        <div class="gallery">
-      <img src="badminton.jpg" alt="us" class="active">
-      <video src="clip.mp4" muted loop playsinline alt="us"></video>
-      <img src="basketball_1.jpg" alt="us">
-      <img src="basketball_2.jpg" alt="us">
-    </div>
-  </section>  <!-- Letter -->  <section id="letter" class="fade">
-    <h2>To my dearest Grace</h2>
-    <div class="letter">
-      <p>My love,</p>
-      <p>I know this isn’t how Valentine’s Day is supposed to look. I should be next to you, holding your hand.</p>
-      <p>But even from far away, my feelings for you don’t change — they grow.</p>
-      <p>This isn’t just a website. It’s a reminder that no matter where I am, you’re always my person.</p>
-      <p>Happy Valentine’s Day.</p>
-      <p><strong>Always yours,<br>Ko</strong></p>
-    </div>
-  </section>  <!-- Ending -->  <section id="end" class="fade">
-    <h2>This distance is temporary.</h2>
-    <p>Us is not.</p>
-    <div class="love">I love you</div>
-    <footer>I’ll see you soon.</footer>
-  </section><button id="music-toggle" onclick="toggleMusic()">🎵</button>
-
-  <script>
-    /* Fade-in observer */
-    const fades = document.querySelectorAll('.fade');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('show');
-      });
-    }, { threshold: 0.2 });
-    fades.forEach(el => observer.observe(el));
-
-    /* Music + hearts sync */
-    const music = document.getElementById('bg-music');
-    let heartInterval;
-
-        function unlockScroll() {
-      document.body.style.overflowY = 'auto';
-      document.querySelectorAll('section').forEach(sec => sec.style.pointerEvents = 'auto');
-    }
-
-    function startExperience() {
-      fadeInMusic();
-      unlockScroll();
-      startHearts();
-      startGalleryCycle();
-      document.getElementById('music-toggle').style.display = 'block';
-    }
-
-    function fadeInMusic() {
-      music.volume = 0;
-      music.play();
-      let vol = 0;
-      const fade = setInterval(() => {
-        if (vol < 0.25) {
-          vol += 0.01;
-          music.volume = vol;
-        } else {
-          clearInterval(fade);
-        }
-      }, 120);
-    }
-
-    function toggleMusic() {
-      if (music.paused) {
-        music.play();
-      } else {
-        music.pause();
-      }
-    }
-
-        function startGalleryCycle() {
-      const images = document.querySelectorAll('.gallery img');
-      let index = 0;
-
-      setInterval(() => {
-        const current = images[index];
-        current.classList.remove('active');
-        current.classList.add('exit');
-
-        index = (index + 1) % images.length;
-        const next = images[index];
-        next.classList.remove('exit');
-        next.classList.add('active');
-
-        setTimeout(() => current.classList.remove('exit'), 900);
-      }, 3000);
-    }
-
-    function startHearts() {
-      if (heartInterval) return;
-      heartInterval = setInterval(createHeart, 600);
-    }
-
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.innerText = '❤';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.fontSize = (14 + Math.random() * 18) + 'px';
-      heart.style.animationDuration = (5 + Math.random() * 4) + 's';
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 9000);
-    }
-  </script><script>
-  const galleryItems = document.querySelectorAll('.gallery img, .gallery video');
-  let currentIndex = 0;
-
+function startGallery() {
+  showItem(index);
   setInterval(() => {
-    galleryItems[currentIndex].classList.remove('active');
+    index = (index + 1) % galleryItems.length;
+    showItem(index);
+  }, DISPLAY_TIME);
+}
+</script>
 
-    // pause video when leaving
-    if (galleryItems[currentIndex].tagName === 'VIDEO') {
-      galleryItems[currentIndex].pause();
-      galleryItems[currentIndex].currentTime = 0;
-    }
-
-    currentIndex = (currentIndex + 1) % galleryItems.length;
-    galleryItems[currentIndex].classList.add('active');
-
-    // play video when active
-    if (galleryItems[currentIndex].tagName === 'VIDEO') {
-      galleryItems[currentIndex].play();
-    }
-  }, 6000);
-</script></body>
+</body>
 </html>
