@@ -78,8 +78,8 @@ p {
 /* ===== GALLERY ===== */
 .gallery {
   position: relative;
-  width: 360px;     /* IMAGE SIZE */
-  height: 360px;    /* IMAGE SIZE */
+  width: 360px;
+  height: 360px;
   margin-top: 40px;
 }
 
@@ -93,7 +93,7 @@ p {
   border-radius: 18px;
   opacity: 0;
   transform: scale(0.95);
-  transition: opacity 3s ease, transform 3s ease; /* ANIMATION SMOOTHNESS */
+  transition: opacity 3s ease, transform 3s ease;
   box-shadow: 0 25px 50px rgba(0,0,0,0.18);
 }
 
@@ -181,7 +181,6 @@ p {
   <h2>Us</h2>
   <p>Memories I replay when I miss you.</p>
   <div class="gallery">
-    <!-- YOU CAN REORDER FREELY -->
     <img src="1.jpg" class="active">
     <video src="MYA7UCC1FDM5667R3G2F.mp4" muted loop playsinline></video>
     <img src="2.jpg">
@@ -234,7 +233,7 @@ function fadeInMusic() {
   music.play();
   let v = 0;
   const i = setInterval(() => {
-    if (v < 0.25) { v += 0.01; music.volume = v; } // 🔊 ADJUST MAX VOLUME HERE
+    if (v < 0.25) { v += 0.01; music.volume = v; }
     else clearInterval(i);
   }, 120);
 }
@@ -255,7 +254,6 @@ function startExperience() {
   startHearts();
   startGallery();
   document.getElementById('music-toggle').style.display = 'block';
-
   document.getElementById('voice').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -275,23 +273,27 @@ function startHearts() {
   }, 600);
 }
 
-/* Gallery */
+/* Gallery (smooth video exit) */
 const galleryItems = document.querySelectorAll('.gallery img, .gallery video');
 let index = 0;
-const DISPLAY_TIME = 6000; // ⏱️ CHANGE DURATION HERE (ms)
+const DISPLAY_TIME = 6000;
+const FADE_DURATION = 3000;
 
 function showItem(i) {
   galleryItems.forEach((el, idx) => {
-    el.classList.remove('active', 'exit');
-    if (el.tagName === 'VIDEO') {
-      el.pause();
-      el.currentTime = 0;
-    }
     if (idx === i) {
       el.classList.add('active');
+      el.classList.remove('exit');
       if (el.tagName === 'VIDEO') el.play();
     } else {
+      el.classList.remove('active');
       el.classList.add('exit');
+      if (el.tagName === 'VIDEO') {
+        setTimeout(() => {
+          el.pause();
+          el.currentTime = 0;
+        }, FADE_DURATION);
+      }
     }
   });
 }
@@ -303,15 +305,6 @@ function startGallery() {
     showItem(index);
   }, DISPLAY_TIME);
 }
-
-/* CINEMATIC END LOCK */
-const endSection = document.getElementById('end');
-const endObserver = new IntersectionObserver(entries => {
-  if (entries[0].isIntersecting) {
-    document.body.classList.add('locked');
-  }
-}, { threshold: 0.8 });
-endObserver.observe(endSection);
 </script>
 
 </body>
