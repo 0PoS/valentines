@@ -25,7 +25,11 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.7;
+}
+
+body.locked {
   overflow: hidden;
+  height: 100vh;
 }
 
 section {
@@ -41,6 +45,11 @@ section {
 
 h1, h2 {
   font-family: 'Playfair Display', serif;
+  margin-bottom: 20px;
+}
+
+p {
+  max-width: 700px;
   margin-bottom: 20px;
 }
 
@@ -69,8 +78,8 @@ h1, h2 {
 /* ===== GALLERY ===== */
 .gallery {
   position: relative;
-  width: 320px;     /* 👈 IMAGE SIZE */
-  height: 320px;    /* 👈 IMAGE SIZE */
+  width: 360px;     /* IMAGE SIZE */
+  height: 360px;    /* IMAGE SIZE */
   margin-top: 40px;
 }
 
@@ -84,7 +93,7 @@ h1, h2 {
   border-radius: 18px;
   opacity: 0;
   transform: scale(0.95);
-  transition: opacity 3s ease, transform 3s ease; /* 👈 ANIMATION SPEED */
+  transition: opacity 3s ease, transform 3s ease; /* ANIMATION SMOOTHNESS */
   box-shadow: 0 25px 50px rgba(0,0,0,0.18);
 }
 
@@ -148,7 +157,7 @@ h1, h2 {
 </style>
 </head>
 
-<body>
+<body class="locked">
 
 <audio id="bg-music" loop>
   <source src="background.mp3" type="audio/mpeg">
@@ -171,13 +180,12 @@ h1, h2 {
 <section id="gallery" class="fade">
   <h2>Us</h2>
   <p>Memories I replay when I miss you.</p>
-
   <div class="gallery">
-    <!-- 🔁 YOU CAN REORDER THESE FREELY -->
-    <img src="badminton.jpg" alt="us">
-    <video src="clip.mp4" muted loop playsinline alt="us"></video>
-    <img src="basketball_1.jpg" alt="us">
-    <img src="basketball_2.jpg" alt="us">
+    <!-- YOU CAN REORDER FREELY -->
+    <img src="badminton.jpg">
+    <video src="clip.mp4" muted loop playsinline></video>
+    <img src="basketball_1.jpg">
+    <img src="basketball_2.jpg">
   </div>
 </section>
 
@@ -213,7 +221,7 @@ function fadeInMusic() {
   music.play();
   let v = 0;
   const i = setInterval(() => {
-    if (v < 0.25) { v += 0.01; music.volume = v; }
+    if (v < 0.25) { v += 0.01; music.volume = v; } // 🔊 ADJUST MAX VOLUME HERE
     else clearInterval(i);
   }, 120);
 }
@@ -221,14 +229,21 @@ function toggleMusic() {
   music.paused ? music.play() : music.pause();
 }
 
-/* Unlock + start */
-function startExperience() {
-  document.body.style.overflow = 'auto';
+/* Unlock site */
+function unlockSite() {
+  document.body.classList.remove('locked');
   document.querySelectorAll('section').forEach(s => s.style.pointerEvents = 'auto');
+}
+
+/* Start experience */
+function startExperience() {
+  unlockSite();
   fadeInMusic();
   startHearts();
   startGallery();
   document.getElementById('music-toggle').style.display = 'block';
+
+  document.getElementById('voice').scrollIntoView({ behavior: 'smooth' });
 }
 
 /* Hearts */
@@ -247,7 +262,7 @@ function startHearts() {
   }, 600);
 }
 
-/* ===== GALLERY LOGIC ===== */
+/* Gallery */
 const galleryItems = document.querySelectorAll('.gallery img, .gallery video');
 let index = 0;
 const DISPLAY_TIME = 6000; // ⏱️ CHANGE DURATION HERE (ms)
@@ -255,12 +270,10 @@ const DISPLAY_TIME = 6000; // ⏱️ CHANGE DURATION HERE (ms)
 function showItem(i) {
   galleryItems.forEach((el, idx) => {
     el.classList.remove('active', 'exit');
-
     if (el.tagName === 'VIDEO') {
       el.pause();
       el.currentTime = 0;
     }
-
     if (idx === i) {
       el.classList.add('active');
       if (el.tagName === 'VIDEO') el.play();
@@ -277,6 +290,15 @@ function startGallery() {
     showItem(index);
   }, DISPLAY_TIME);
 }
+
+/* CINEMATIC END LOCK */
+const endSection = document.getElementById('end');
+const endObserver = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    document.body.classList.add('locked');
+  }
+}, { threshold: 0.8 });
+endObserver.observe(endSection);
 </script>
 
 </body>
