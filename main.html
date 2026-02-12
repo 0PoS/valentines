@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alainmar</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
-  <style>
+  <title>My Alainmar ❤️</title>  <!-- Google Fonts -->  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">  <style>
     :root {
       --bg: #faf7f5;
       --accent: #e8b4bc;
@@ -100,18 +94,24 @@
       margin-top: 40px;
     }
 
-        .gallery img {
-      position: absolute;
-      top: 0;
-      left: 0;
+        .gallery img,
+    .gallery video {
       width: 100%;
-      height: 100%;
+      max-width: 220px;
+      border-radius: 14px;
       object-fit: cover;
-      border-radius: 18px;
       opacity: 0;
       transform: scale(0.95);
-      transition: opacity 2s ease, transform 2s ease;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.18);
+      transition: opacity 2.2s ease, transform 2.2s ease;
+    }
+
+    .gallery video {
+      height: auto;
+    }
+
+    .gallery .active {
+      opacity: 1;
+      transform: scale(1);
     }
 
     .gallery img.active {
@@ -184,49 +184,29 @@
       color: var(--accent);
       font-family: 'Playfair Display', serif;
     }
-  </style>
-</head>
-
-<body>
-
-  <!-- Background Music -->
-  <audio id="bg-music" loop>
+  </style></head><body>  <!-- Background Music -->  <audio id="bg-music" loop>
     <source src="background.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- Landing -->
-  <section id="landing" class="fade" style="pointer-events:auto">
+  </audio>  <!-- Landing -->  <section id="landing" class="fade" style="pointer-events:auto">
     <h1>For the girl I love</h1>
     <p>Even when I’m far away, my heart never is.</p>
     <a href="#voice" class="btn" onclick="startExperience()">Open</a>
-  </section>
-
-  <!-- Voice Note -->
-  <section id="voice" class="fade">
+  </section>  <!-- Voice Note -->  <section id="voice" class="fade">
     <h2>Hear Me</h2>
     <p>You said you like my voice. So, this one is just for you.</p>
     <audio controls>
       <source src="voice-note.mp3" type="audio/mpeg" />
     </audio>
-  </section>
-
-  <!-- Gallery -->
-  <section id="gallery" class="fade">
+  </section>  <!-- Gallery -->  <section id="gallery" class="fade">
     <h2>Us</h2>
     <p>Memories I replay when I miss you.</p>
         <div class="gallery">
-      <img src="1.jpg" alt="us" class="active">
-      <img src="2.jpg" alt="us">
-      <img src="3.jpg" alt="us">
-      <img src="4.jpg" alt="us">
-      <img src="5.jpg" alt="us">
-      <img src="6.jpg" alt="us">
+      <img src="badminton.jpg" alt="us" class="active">
+      <video src="clip.mp4" muted loop playsinline></video>
+      <img src="basketball_1.jpg" alt="us">
+      <img src="basketball_2.jpg" alt="us">
     </div>
-  </section>
-
-  <!-- Letter -->
-  <section id="letter" class="fade">
-    <h2>To my Dearest Grace</h2>
+  </section>  <!-- Letter -->  <section id="letter" class="fade">
+    <h2>To my dearest Grace</h2>
     <div class="letter">
       <p>My love,</p>
       <p>I know this isn’t how Valentine’s Day is supposed to look. I should be next to you, holding your hand.</p>
@@ -235,17 +215,12 @@
       <p>Happy Valentine’s Day.</p>
       <p><strong>Always yours,<br>Ko</strong></p>
     </div>
-  </section>
-
-  <!-- Ending -->
-  <section id="end" class="fade">
+  </section>  <!-- Ending -->  <section id="end" class="fade">
     <h2>This distance is temporary.</h2>
     <p>Us is not.</p>
     <div class="love">I love you</div>
     <footer>I’ll see you soon.</footer>
-  </section>
-
-  <button id="music-toggle" onclick="toggleMusic()">🎵</button>
+  </section><button id="music-toggle" onclick="toggleMusic()">🎵</button>
 
   <script>
     /* Fade-in observer */
@@ -261,7 +236,7 @@
     const music = document.getElementById('bg-music');
     let heartInterval;
 
-    function unlockScroll() {
+        function unlockScroll() {
       document.body.style.overflowY = 'auto';
       document.querySelectorAll('section').forEach(sec => sec.style.pointerEvents = 'auto');
     }
@@ -314,7 +289,7 @@
       }, 3000);
     }
 
-    function startHearts() {
+    function startHearts() {() {
       if (heartInterval) return;
       heartInterval = setInterval(createHeart, 600);
     }
@@ -329,7 +304,26 @@
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 9000);
     }
-  </script>
+  </script><script>
+  const galleryItems = document.querySelectorAll('.gallery img, .gallery video');
+  let currentIndex = 0;
 
-</body>
+  setInterval(() => {
+    galleryItems[currentIndex].classList.remove('active');
+
+    // pause video when leaving
+    if (galleryItems[currentIndex].tagName === 'VIDEO') {
+      galleryItems[currentIndex].pause();
+      galleryItems[currentIndex].currentTime = 0;
+    }
+
+    currentIndex = (currentIndex + 1) % galleryItems.length;
+    galleryItems[currentIndex].classList.add('active');
+
+    // play video when active
+    if (galleryItems[currentIndex].tagName === 'VIDEO') {
+      galleryItems[currentIndex].play();
+    }
+  }, 6000);
+</script></body>
 </html>
