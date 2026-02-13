@@ -14,11 +14,7 @@
   --text: #2b2b2b;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: 'Inter', sans-serif;
@@ -224,7 +220,7 @@ p {
 </section>
 
 <button id="music-toggle" onclick="toggleMusic()">🎵</button>
-  
+
 <script>
 /* Fade sections */
 const observer = new IntersectionObserver(entries => {
@@ -258,7 +254,6 @@ function startExperience() {
   unlockSite();
   fadeInMusic();
   startHearts();
-  startGallery();
   document.getElementById('music-toggle').style.display = 'block';
   document.getElementById('voice').scrollIntoView({ behavior: 'smooth' });
 }
@@ -279,11 +274,13 @@ function startHearts() {
   }, 600);
 }
 
-/* Gallery (smooth video exit) */
+/* ===== GALLERY (plays only when visible) ===== */
 const galleryItems = document.querySelectorAll('.gallery img, .gallery video');
 let index = 0;
-const DISPLAY_TIME = 6000;
-const FADE_DURATION = 3000;
+let galleryInterval = null;
+
+const DISPLAY_TIME = 6000;   // ⏱️ duration per item
+const FADE_DURATION = 3000; // 🎞️ fade length
 
 function showItem(i) {
   galleryItems.forEach((el, idx) => {
@@ -305,12 +302,33 @@ function showItem(i) {
 }
 
 function startGallery() {
+  if (galleryInterval) return;
   showItem(index);
-  setInterval(() => {
+  galleryInterval = setInterval(() => {
     index = (index + 1) % galleryItems.length;
     showItem(index);
   }, DISPLAY_TIME);
 }
+
+function stopGallery() {
+  clearInterval(galleryInterval);
+  galleryInterval = null;
+  galleryItems.forEach(el => {
+    if (el.tagName === 'VIDEO') el.pause();
+  });
+}
+
+/* Observe gallery visibility */
+const gallerySection = document.getElementById('gallery-section');
+const galleryObserver = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    startGallery();
+  } else {
+    stopGallery();
+  }
+}, { threshold: 0.6 });
+
+galleryObserver.observe(gallerySection);
 </script>
 
 </body>
