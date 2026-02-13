@@ -213,6 +213,7 @@ p {
   </div>
 </section>
 
+
 <section id="end" class="fade">
   <h2>This distance is temporary.</h2>
   <p>Us is not.</p>
@@ -274,13 +275,13 @@ function startHearts() {
   }, 600);
 }
 
-/* ===== GALLERY (plays only when visible) ===== */
+/* ===== GALLERY ===== */
 const galleryItems = document.querySelectorAll('.gallery img, .gallery video');
 let index = 0;
-let galleryInterval = null;
+let galleryStarted = false;
 
-const DISPLAY_TIME = 6000;   // ⏱️ duration per item
-const FADE_DURATION = 3000; // 🎞️ fade length
+const DISPLAY_TIME = 6000;
+const FADE_DURATION = 3000;
 
 function showItem(i) {
   galleryItems.forEach((el, idx) => {
@@ -302,29 +303,21 @@ function showItem(i) {
 }
 
 function startGallery() {
-  if (galleryInterval) return;
+  if (galleryStarted) return;
+  galleryStarted = true;
+
   showItem(index);
-  galleryInterval = setInterval(() => {
+  setInterval(() => {
     index = (index + 1) % galleryItems.length;
     showItem(index);
   }, DISPLAY_TIME);
 }
 
-function stopGallery() {
-  clearInterval(galleryInterval);
-  galleryInterval = null;
-  galleryItems.forEach(el => {
-    if (el.tagName === 'VIDEO') el.pause();
-  });
-}
-
-/* Observe gallery visibility */
+/* Start gallery when visible (ONCE) */
 const gallerySection = document.getElementById('gallery-section');
 const galleryObserver = new IntersectionObserver(entries => {
   if (entries[0].isIntersecting) {
     startGallery();
-  } else {
-    stopGallery();
   }
 }, { threshold: 0.6 });
 
