@@ -238,7 +238,7 @@ function fadeInMusic() {
   const i = setInterval(() => {
     if (v < 0.40) { v += 0.01; music.volume = v; }
     else clearInterval(i);
-  }, 70);
+  }, 40);
 }
 function toggleMusic() {
   music.paused ? music.play() : music.pause();
