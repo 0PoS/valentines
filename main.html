@@ -236,7 +236,7 @@ function fadeInMusic() {
   music.play();
   let v = 0;
   const i = setInterval(() => {
-    if (v < 0.25) { v += 0.01; music.volume = v; }
+    if (v < 0.40) { v += 0.01; music.volume = v; }
     else clearInterval(i);
   }, 120);
 }
