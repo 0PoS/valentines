@@ -281,6 +281,7 @@ let index = 0;
 let galleryStarted = false;
 
 const DISPLAY_TIME = 6000;
+const FIRST_DISPLAY_TIME = 3500; // 👈 shorter first image
 const FADE_DURATION = 3000;
 
 function showItem(i) {
@@ -307,12 +308,22 @@ function startGallery() {
   galleryStarted = true;
 
   showItem(index);
-  setInterval(() => {
+
+  // First transition happens faster
+  setTimeout(() => {
     index = (index + 1) % galleryItems.length;
     showItem(index);
-  }, DISPLAY_TIME);
+
+    // After first switch, use normal timing
+    setInterval(() => {
+      index = (index + 1) % galleryItems.length;
+      showItem(index);
+    }, DISPLAY_TIME);
+
+  }, FIRST_DISPLAY_TIME);
 }
 
+  
 /* Start gallery when visible (ONCE) */
 const gallerySection = document.getElementById('gallery-section');
 const galleryObserver = new IntersectionObserver(entries => {
