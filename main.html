@@ -150,6 +150,38 @@ p {
   color: var(--accent);
   font-family: 'Playfair Display', serif;
 }
+
+/* ===== FLOWERS ===== */
+.flower {
+  position: fixed;
+  bottom: -40px;
+  pointer-events: none;
+  opacity: 0.28;
+  animation: floatFlower linear forwards;
+  z-index: 0;
+}
+
+.hydrangea {
+  color: #6fa8ff;
+  filter: drop-shadow(0 0 6px rgba(110, 204, 255,0.25));
+}
+
+.rose {
+  color: #c81d25;
+  filter: drop-shadow(0 0 8px rgba(200,30,40,0.35));
+}
+
+@keyframes floatFlower {
+  from {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.3;
+  }
+  to {
+    transform: translateY(-130vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+  
 </style>
 </head>
 
@@ -223,6 +255,7 @@ p {
 <button id="music-toggle" onclick="toggleMusic()">🎵</button>
 
 <script>
+
 /* Fade sections */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => e.isIntersecting && e.target.classList.add('show'));
@@ -255,9 +288,32 @@ function startExperience() {
   unlockSite();
   fadeInMusic();
   startHearts();
+  startHydrangeas();
+  
   document.getElementById('music-toggle').style.display = 'block';
   document.getElementById('voice').scrollIntoView({ behavior: 'smooth' });
 }
+
+/* ===== HYDRANGEAS ===== */
+let hydrangeaInterval;
+
+function startHydrangeas() {
+  if (hydrangeaInterval) return;
+
+  hydrangeaInterval = setInterval(() => {
+    const f = document.createElement('div');
+    f.className = 'flower hydrangea';
+    f.innerText = '💠';
+
+    f.style.left = Math.random() * 100 + 'vw';
+    f.style.fontSize = 18 + Math.random() * 26 + 'px';
+    f.style.animationDuration = 14 + Math.random() * 8 + 's';
+
+    document.body.appendChild(f);
+    setTimeout(() => f.remove(), 22000);
+  }, 1400);
+}
+
 
 /* Hearts */
 let heartInterval;
@@ -273,6 +329,26 @@ function startHearts() {
     document.body.appendChild(h);
     setTimeout(() => h.remove(), 9000);
   }, 600);
+}
+
+/* ===== ROSES (END ONLY) ===== */
+let roseInterval;
+
+function startRoses() {
+  if (roseInterval) return;
+
+  roseInterval = setInterval(() => {
+    const r = document.createElement('div');
+    r.className = 'flower rose';
+    r.innerText = '🌹';
+
+    r.style.left = Math.random() * 100 + 'vw';
+    r.style.fontSize = 20 + Math.random() * 22 + 'px';
+    r.style.animationDuration = 12 + Math.random() * 6 + 's';
+
+    document.body.appendChild(r);
+    setTimeout(() => r.remove(), 20000);
+  }, 2800); // rare, intentional
 }
 
 /* ===== GALLERY ===== */
@@ -333,6 +409,15 @@ const galleryObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.6 });
 
 galleryObserver.observe(gallerySection);
+
+const endSection = document.getElementById('end');
+const endObserver = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    startRoses();
+  }
+}, { threshold: 0.6 });
+
+endObserver.observe(endSection);
 </script>
 
 </body>
